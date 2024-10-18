@@ -4,13 +4,19 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Auth } from '../auth/decorators/auth.decorators';
 import { Role } from '../common/enums/role.enum';
+import { ApiBearerAuth, ApiCreatedResponse, ApiForbiddenResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
+@ApiTags('Users')
+@ApiBearerAuth()
+@ApiUnauthorizedResponse({description: 'Unauthorizer Bearer Auth'})
 @Auth(Role.ADMIN)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
+  @ApiCreatedResponse({description: 'The record has been successfully created.' })
+  @ApiForbiddenResponse({description: 'Forbidden.'})
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }

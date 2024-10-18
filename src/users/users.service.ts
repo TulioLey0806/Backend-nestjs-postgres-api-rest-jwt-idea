@@ -4,6 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
+import { Role } from '../common/enums/role.enum';
 
 @Injectable()
 export class UsersService {
@@ -14,6 +15,12 @@ export class UsersService {
   
   async create(createUserDto: CreateUserDto) {
     const user = this.usersRepository.create(createUserDto);
+    
+    // En caso que el nombre del usuario sea Administrator, asigno el role admin    
+    if (user.name === 'Administrator') {
+      user.role = Role.ADMIN;
+    }
+
     return await this.usersRepository.save(user);
   }
 

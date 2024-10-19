@@ -16,6 +16,8 @@ async function bootstrap() {
     })
   );
 
+  app.enableCors();
+
   const config = new DocumentBuilder()
     .setTitle("Proyecto Great Profit Idea")
     .setDescription("Backend api-rest desarrollado con nestjs y almacenamiento con postgres")
@@ -26,6 +28,6 @@ async function bootstrap() {
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup("docs", app, document);
 
-  await app.listen(parseInt(process.env.PORT) || 3000);
+  await app.listen(parseInt(process.env.PORT) || 8000);
 }
 bootstrap();
